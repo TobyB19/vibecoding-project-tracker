@@ -179,6 +179,6 @@ The hackathon is "done" when all 13 milestone tags are pushed to your repo and v
 - Everything saves to localstorage so no backend needed   
 - Built with react and vite
 
----
+----
 
 *PRD version: hackathon-starter v1 · maintained by Prof. Dr. Ignacio Alvarez*
