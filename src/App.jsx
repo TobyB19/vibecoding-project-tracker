@@ -1,4 +1,5 @@
 // src/App.jsx
+// Source: Local React and Tailwind CSS implementation
 import { useState, useEffect } from 'react';
 
 export const STAGES = [
@@ -101,6 +102,12 @@ export default function App() {
     }
   };
 
+  // Helper function to extract initials from the assignee's full name
+  const getInitials = (name) => {
+    if (!name) return '?';
+    return name.split(' ').map(n => n[0]).join('').toUpperCase();
+  };
+
   return (
     <div className="min-h-screen bg-surface-page p-6 font-sans">
       <header className="mb-8 flex items-end justify-between">
@@ -133,11 +140,10 @@ export default function App() {
                 <div 
                   key={task.id} 
                   onClick={() => setEditing(task)}
-                  className="bg-white p-4 rounded-lg border border-slate-200 hover:border-brand-primary transition-colors shadow-sm cursor-pointer flex flex-col gap-2"
+                  className="bg-white p-4 rounded-lg border border-slate-200 hover:border-brand-primary transition-colors shadow-sm cursor-pointer flex flex-col gap-3"
                 >
                   <div className="flex justify-between items-start gap-2">
                     <p className="text-sm font-medium text-text-primary leading-tight">{task.title}</p>
-                    {/* Visual marker for feature vs bug */}
                     <span className={`text-[10px] uppercase tracking-wider font-bold px-2 py-0.5 rounded-full whitespace-nowrap ${
                       task.type === 'bug' 
                         ? 'bg-bug/10 text-bug' 
@@ -146,12 +152,14 @@ export default function App() {
                       {task.type}
                     </span>
                   </div>
-                  <p className="text-xs text-text-muted mt-2 flex items-center gap-2">
-                    <span className="w-5 h-5 rounded-full bg-brand-primary/10 text-brand-primary flex items-center justify-center font-bold">
-                      T
-                    </span>
-                    {task.assignee}
-                  </p>
+                  
+                  {/* Dynamic Assignee Badge UI */}
+                  <div className="flex items-center gap-2 mt-1 border-t border-slate-100 pt-2">
+                    <div className="w-6 h-6 rounded-full bg-brand-primary/10 text-brand-primary flex items-center justify-center text-[10px] font-bold border border-brand-primary/20">
+                      {getInitials(task.assignee)}
+                    </div>
+                    <span className="text-xs text-text-muted font-medium">{task.assignee}</span>
+                  </div>
                 </div>
               ))}
             </div>
