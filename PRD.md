@@ -172,6 +172,7 @@ The hackathon is "done" when all 13 milestone tags are pushed to your repo and v
 - Show the task owner on the card and add a hand-off dropdown   
 - Text area to save ai prompt context   
 - Copy context button to easily copy stuff to clipboard  
+- Change card colors based on how close the due date is
 
 ## Non-functional requirements 
 

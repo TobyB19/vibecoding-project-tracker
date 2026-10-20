@@ -12,17 +12,18 @@
 
 One sentence that captures the feeling the tracker should leave you with.
 
-`<TODO>`
+Dark mode so my eyes don't burn at 2am.
 
 Two or three references that capture the vibe (links to dribbble shots, screenshots of apps you admire, Pinterest boards — anything visual):
 
-- `<TODO>`
-- `<TODO>`
-- `<TODO>`
+- GitHub dark mode
+- Linear
+- Vercel dashboard
 
 Anti-references — what we are explicitly **not** trying to look like:
 
-- `<TODO>`
+- Jira
+- Microsoft Excel
 
 ## 2. Color palette
 
@@ -32,36 +33,36 @@ These are the colors the build milestones will reference. Once chosen, paste the
 
 | Token | Hex | Where it shows up |
 |---|---|---|
-| `brand-primary` | `<TODO>` | Header, "+" button, focus rings |
-| `brand-accent` | `<TODO>` | Highlights, hover states, links |
-| `surface-page` | `<TODO>` | Page background |
-| `surface-card` | `<TODO>` | Card background |
-| `text-primary` | `<TODO>` | Body text |
-| `text-muted` | `<TODO>` | Captions, dates, counts |
+| `brand-primary` | #4f46e5 | Header, + button, focus rings |
+| `brand-accent` | #6366f1 | Highlights, hover states, links |
+| `surface-page` | #020617 | Page background |
+| `surface-card` | #0f172a | Card background |
+| `text-primary` | #f8fafc | Body text |
+| `text-muted` | #94a3b8 | Captions, dates, counts |
 
 ### Task type (M6 `tag-style`)
 
 | Token | Hex | When used |
 |---|---|---|
-| `type-feature` | `<TODO>` | Cards tagged `feature` (accent stripe + icon) |
-| `type-bug` | `<TODO>` | Cards tagged `bug` (accent stripe + icon) |
+| `type-feature` | #10b981 | Cards tagged `feature` (accent stripe + icon) |
+| `type-bug` | #f43f5e | Cards tagged `bug` (accent stripe + icon) |
 
 ### Due-date states (M8 `due-tint`)
 
 | Token | Hex | When used |
 |---|---|---|
-| `due-safe` | `<TODO>` | More than 2 days out |
-| `due-warning` | `<TODO>` | Less than 24 hours |
-| `due-overdue` | `<TODO>` | Past due |
-| `due-neutral` | `<TODO>` | Done (overrides date) |
+| `due-safe` | #64748b | More than 2 days out |
+| `due-warning` | #f59e0b | Less than 24 hours |
+| `due-overdue` | #f43f5e | Past due |
+| `due-neutral` | #475569 | Done (overrides date) |
 
 ## 3. Typography
 
 | Role | Font | Why |
 |---|---|---|
-| Heading | `<TODO>` | `<TODO one sentence>` |
-| Body | `<TODO>` | `<TODO one sentence>` |
-| Monospace (tags, badges, code) | `<TODO>` | `<TODO one sentence>` |
+| Heading | Tailwind Sans | clean and default |
+| Body | Tailwind Sans | easy to read |
+| Monospace (tags, badges, code) | Tailwind Mono | good for code blocks |
 
 Suggested sizes (override only if the design demands it):
 
@@ -75,11 +76,11 @@ Suggested sizes (override only if the design demands it):
 
 One short sentence per element. These set the tone for the build phase — Person A's modal and Person B's anchor board should both feel like they came from this doc.
 
-- **Cards:** `<TODO>` (e.g. "Light, almost weightless; the only weight is from a 1px border, no shadow except on hover.")
-- **Buttons:** `<TODO>` (e.g. "Solid fill, no gradient, generous padding, rounded-md.")
-- **Modal:** `<TODO>` (e.g. "Centered, max-width-md, slate-900 backdrop at 50% opacity.")
-- **Empty states:** `<TODO>` (e.g. "Dashed border, muted text, never sad.")
-- **Drag affordance (if used):** `<TODO>` (e.g. "None — we use a status dropdown.")
+- **Cards:** rounded edges, no heavy drop shadows.
+- **Buttons:** solid color, changes slightly when you hover.
+- **Modal:** sits in the middle with a dark overlay behind it.
+- **Empty states:** grey text, dashed border.
+- **Drag affordance (if used):** none, just using a dropdown for status.
 
 ## 5. Voice / microcopy
 
@@ -87,18 +88,18 @@ Three lines of microcopy that capture the tone of the product. Keep it short —
 
 | Where | Text |
 |---|---|
-| "+" button label | `<TODO>` (e.g. "+ Task" or "Add task" or "New") |
-| Empty column placeholder | `<TODO>` (e.g. "Nothing here yet — keep going.") |
-| Toast after "Copy as Prompt Context" | `<TODO>` (e.g. "Copied. Now paste it into the AI.") |
-| Confirm-delete message | `<TODO>` (e.g. "Delete this task? You can't undo.") |
-| Handoff toast (M7 `task-owner`) | `<TODO>` (e.g. "Handed off to {name}. They've got it.") |
+| + button label | Add Task |
+| Empty column placeholder | Nothing here yet. |
+| Toast after Copy as Prompt Context | Copied to clipboard. |
+| Confirm-delete message | Delete this task? |
+| Handoff toast (M7 `task-owner`) | Reassigned to {name}. |
 
 ## 6. Logo / wordmark
 
 The tracker probably doesn't need a logo, but it does need a name and a wordmark style.
 
-- **Product name:** `<TODO>` (match PRD §11 team identity)
-- **Wordmark style:** `<TODO>` (e.g. "Just the name in the heading font, brand-primary color, no icon.")
+- **Product name:** Team Bish Tracker
+- **Wordmark style:** Just plain text in the primary brand color, no logo needed.
 
 ## 7. Out of scope (this hackathon)
 
