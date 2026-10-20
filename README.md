@@ -100,4 +100,6 @@ Once M9 (`context`) is done, keep the Context field of each real task up to date
 
 ---
 
+Linked to tracker
+
 *UXD Vibecoding Hackathon 2026 · Prof. Dr. Ignacio Alvarez*
