@@ -1,5 +1,5 @@
 // src/App.jsx
-// Source: Local React and Tailwind CSS implementation
+// Source: Local React setup and standard JS Date math
 import { useState, useEffect } from 'react';
 
 export const STAGES = [
@@ -102,10 +102,27 @@ export default function App() {
     }
   };
 
-  // Helper function to extract initials from the assignee's full name
   const getInitials = (name) => {
     if (!name) return '?';
     return name.split(' ').map(n => n[0]).join('').toUpperCase();
+  };
+
+  // Helper to figure out how close the deadline is and return the right colors
+  const getDueTint = (dueDate, status) => {
+    if (status === 'done') return 'border-due-neutral bg-slate-50';
+    if (!dueDate) return 'border-slate-200 bg-white';
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const due = new Date(dueDate);
+    due.setHours(0, 0, 0, 0);
+
+    // Get the difference in days
+    const diffDays = Math.ceil((due - today) / (1000 * 60 * 60 * 24));
+
+    if (diffDays < 0) return 'border-due-overdue bg-red-50'; // Past due
+    if (diffDays <= 1) return 'border-due-warning bg-orange-50'; // Less than 24-48 hours
+    return 'border-due-safe bg-white'; // Safe
   };
 
   return (
@@ -140,7 +157,8 @@ export default function App() {
                 <div 
                   key={task.id} 
                   onClick={() => setEditing(task)}
-                  className="bg-white p-4 rounded-lg border border-slate-200 hover:border-brand-primary transition-colors shadow-sm cursor-pointer flex flex-col gap-3"
+                  // Inject the dynamic due date tint here
+                  className={`p-4 rounded-lg border-2 hover:border-brand-primary transition-colors shadow-sm cursor-pointer flex flex-col gap-3 ${getDueTint(task.dueDate, task.status)}`}
                 >
                   <div className="flex justify-between items-start gap-2">
                     <p className="text-sm font-medium text-text-primary leading-tight">{task.title}</p>
@@ -153,12 +171,17 @@ export default function App() {
                     </span>
                   </div>
                   
-                  {/* Dynamic Assignee Badge UI */}
-                  <div className="flex items-center gap-2 mt-1 border-t border-slate-100 pt-2">
-                    <div className="w-6 h-6 rounded-full bg-brand-primary/10 text-brand-primary flex items-center justify-center text-[10px] font-bold border border-brand-primary/20">
-                      {getInitials(task.assignee)}
+                  <div className="flex items-center justify-between mt-1 border-t border-slate-200/60 pt-2">
+                    <div className="flex items-center gap-2">
+                      <div className="w-6 h-6 rounded-full bg-brand-primary/10 text-brand-primary flex items-center justify-center text-[10px] font-bold border border-brand-primary/20">
+                        {getInitials(task.assignee)}
+                      </div>
+                      <span className="text-xs text-text-muted font-medium">{task.assignee}</span>
                     </div>
-                    <span className="text-xs text-text-muted font-medium">{task.assignee}</span>
+                    {/* Render the due date so you can test the math */}
+                    <span className="text-[10px] text-text-muted font-mono">
+                      {task.dueDate ? task.dueDate : 'No due date'}
+                    </span>
                   </div>
                 </div>
               ))}
