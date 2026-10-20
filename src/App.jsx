@@ -1,5 +1,5 @@
 // src/App.jsx
-// Source: Local React setup and Clipboard API
+// Source: Local React setup and Team Bish specs
 import { useState, useEffect } from 'react';
 
 export const STAGES = [
@@ -10,6 +10,15 @@ export const STAGES = [
 ];
 
 export const TEAM = ['Toby Bishop'];
+
+// High-level anchors for the project
+export const DELIVERABLES = [
+  { id: 'd1', label: 'Design System', status: 'done' },
+  { id: 'd2', label: 'Data Model', status: 'done' },
+  { id: 'd3', label: 'CRUD Operations', status: 'done' },
+  { id: 'd4', label: 'AI Context Integration', status: 'done' },
+  { id: 'd5', label: 'Accessibility Report', status: 'todo' },
+];
 
 export function useLocalStorage(key, initialValue) {
   const [value, setValue] = useState(() => {
@@ -80,7 +89,7 @@ export default function App() {
   ]);
 
   const [editing, setEditing] = useState(null);
-  const [copied, setCopied] = useState(false); // Tracks our copy button feedback
+  const [copied, setCopied] = useState(false);
 
   const handleSave = (e) => {
     e.preventDefault();
@@ -109,7 +118,6 @@ export default function App() {
     }
   };
 
-  // Triggers the clipboard copy and gives visual feedback
   const handleCopy = () => {
     if (editing && editing.context) {
       navigator.clipboard.writeText(editing.context);
@@ -141,7 +149,7 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-surface-page p-6 font-sans">
-      <header className="mb-8 flex items-end justify-between">
+      <header className="mb-6 flex items-end justify-between">
         <div>
           <h1 className="text-2xl font-bold text-brand-primary tracking-tight">
             Team Bish Tracker
@@ -161,6 +169,21 @@ export default function App() {
           + Add Task
         </button>
       </header>
+
+      {/* Deliverable Anchor Board */}
+      <section className="mb-8 bg-surface-card rounded-xl p-4 border border-slate-200 shadow-sm flex flex-col gap-3">
+        <h2 className="text-xs font-semibold text-text-muted uppercase tracking-wider">
+          Project Deliverables
+        </h2>
+        <div className="flex gap-4 overflow-x-auto pb-1">
+          {DELIVERABLES.map(d => (
+            <div key={d.id} className="flex items-center gap-2 bg-white px-3 py-1.5 rounded-md border border-slate-200 shadow-sm whitespace-nowrap">
+              <div className={`w-2 h-2 rounded-full ${d.status === 'done' ? 'bg-feature' : 'bg-brand-primary'}`} />
+              <span className="text-sm font-medium text-text-primary">{d.label}</span>
+            </div>
+          ))}
+        </div>
+      </section>
 
       <main className="grid grid-cols-4 gap-6 pb-4">
         {STAGES.map(stage => (
@@ -229,7 +252,6 @@ export default function App() {
               <div>
                 <div className="flex items-center justify-between mb-1">
                   <label className="block text-sm text-text-muted">AI Context (Paste-ready briefing)</label>
-                  {/* The new Copy Button */}
                   <button 
                     type="button" 
                     onClick={handleCopy}
@@ -238,7 +260,6 @@ export default function App() {
                     {copied ? 'Copied!' : 'Copy'}
                   </button>
                 </div>
-                {/* Changed to controlled input so live edits can be copied instantly */}
                 <textarea 
                   name="context" 
                   value={editing.context} 
