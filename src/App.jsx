@@ -1,40 +1,6 @@
 import { useState, useEffect } from 'react';
 
-/**
- * Vibecoding Project Tracker — starter scaffold.
- *
- * This file is intentionally almost empty. The boilerplate (Vite, React,
- * Tailwind) is configured for you, plus a few shared constants and a
- * localStorage helper. Everything visible on screen, you build.
- *
- * Where to start (build sequence in Phase 3):
- *   - M4  data-model    : render the four columns and the task cards below.
- *   - M5  crud-modal    : add the "+" button modal and the edit-on-click modal.
- *   - M6  tag-style     : feature vs. bug color coding (uses DESIGN.md §2 colors).
- *   - M7  task-owner    : assignee badge + "Hand off to..." dropdown.
- *   - M8  due-tint      : color cards by due date (uses DESIGN.md §2 due-state colors).
- *   - M9  context       : a curated Context briefing field on the modal.
- *   - M10 copy-prompt   : a "Copy as Prompt Context" button that serializes the task + context.
- *   - M11 anchors       : the Anchor Board above the Kanban.
- *   - M12 secret-sauce  : the one open-ended thing that makes your tracker yours.
- *
- * Search the file for `TODO M<n>` to find the right hook for each milestone.
- */
-
-/**
- * @typedef {Object} Task
- * @property {string} id
- * @property {string} title
- * @property {string} description
- * @property {'feature'|'bug'} type
- * @property {'todo'|'in-progress'|'review'|'done'} status
- * @property {string} assignee
- * @property {string|null} dueDate     ISO 'YYYY-MM-DD'
- * @property {string} createdDate      ISO 'YYYY-MM-DD'
- */
-
-// The four columns of the board, in render order.
-// Use these IDs everywhere — do not invent new ones.
+// the four columns of the board, in render order.
 export const STAGES = [
   { id: 'todo',        label: 'To Do' },
   { id: 'in-progress', label: 'In Progress' },
@@ -42,16 +8,9 @@ export const STAGES = [
   { id: 'done',        label: 'Done' },
 ];
 
-// Replace these placeholders with the three names from PRD §8 before M4.
-// They become the only valid values for `Task.assignee`.
-export const TEAM = ['Teammate A', 'Teammate B', 'Teammate C'];
+// just me on the team
+export const TEAM = ['Toby Bishop'];
 
-/**
- * A tiny localStorage hook — survives reloads, no library needed.
- *
- * Usage:
- *   const [tasks, setTasks] = useLocalStorage('vibetracker.tasks', []);
- */
 export function useLocalStorage(key, initialValue) {
   const [value, setValue] = useState(() => {
     try {
@@ -66,7 +25,6 @@ export function useLocalStorage(key, initialValue) {
     try {
       window.localStorage.setItem(key, JSON.stringify(value));
     } catch {
-      /* quota or private-mode error — silently ignore for hackathon */
     }
   }, [key, value]);
 
@@ -74,9 +32,50 @@ export function useLocalStorage(key, initialValue) {
 }
 
 export default function App() {
-  // TODO M4 data-model:
-  //   const [tasks, setTasks] = useLocalStorage('vibetracker.tasks', [/* 3-4 seed tasks */]);
-  //
+  // M4 data-model: seed tasks so it's not empty
+  const [tasks, setTasks] = useLocalStorage('vibetracker.tasks', [
+    {
+      id: '1',
+      title: 'setup vite and react',
+      description: 'get local dev running',
+      type: 'feature',
+      status: 'done', 
+      assignee: 'Toby Bishop',
+      dueDate: '2026-10-25',
+      createdDate: '2026-10-20'
+    },
+    {
+      id: '2',
+      title: 'design tailwind colors',
+      description: 'dark mode colors',
+      type: 'feature',
+      status: 'review',
+      assignee: 'Toby Bishop',
+      dueDate: '2026-10-26',
+      createdDate: '2026-10-20'
+    },
+    {
+      id: '3',
+      title: 'fix board layout',
+      description: 'padding on mobile is off',
+      type: 'bug',
+      status: 'in-progress',
+      assignee: 'Toby Bishop',
+      dueDate: '2026-10-22',
+      createdDate: '2026-10-20'
+    },
+    {
+      id: '4',
+      title: 'create add task modal',
+      description: 'build the form',
+      type: 'feature',
+      status: 'todo',
+      assignee: 'Toby Bishop',
+      dueDate: '2026-10-28',
+      createdDate: '2026-10-20'
+    }
+  ]);
+
   // TODO M5 crud-modal:
   //   const [editing, setEditing] = useState(null);
   //
@@ -84,33 +83,42 @@ export default function App() {
   //   const [anchors, setAnchors] = useLocalStorage('vibetracker.anchors', [...]);
 
   return (
-    <div className="min-h-screen p-6">
-      <header className="mb-6 flex items-end justify-between">
+    <div className="min-h-screen bg-surface-page p-6 font-sans">
+      <header className="mb-8 flex items-end justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900">
-            Vibecoding Project Tracker
+          <h1 className="text-2xl font-bold text-brand-primary tracking-tight">
+            Team Bish Tracker
           </h1>
-          <p className="text-sm text-slate-500">
-            {/* Replace this line with your team name from PRD §11. */}
-            Team starter
+          <p className="text-sm text-text-muted mt-1">
+            A solo vibecoding project tracker built for speed.
           </p>
         </div>
       </header>
 
-      {/* TODO M11 anchors: render the Anchor Board (Presentation / Demo / Report / Documentation) above the board. */}
+      {/* TODO M11 anchors */}
 
-      {/*
-        TODO M4 data-model:
-          Render a Kanban board with the four columns from STAGES.
-          Each column should display the tasks whose status matches its id.
-          Pre-populate 3-4 mock tasks so the board isn't empty on first load.
-
-        TODO M5 crud-modal:
-          Add a "+" button that opens a modal with every Task field.
-          Clicking a card should open the same modal in edit mode.
-      */}
-      <main className="flex h-64 items-center justify-center rounded-lg border-2 border-dashed border-slate-300 text-slate-400">
-        Build the four-column board here · M4
+      <main className="flex gap-6 overflow-x-auto pb-4">
+        {STAGES.map(stage => (
+          <div key={stage.id} className="w-80 shrink-0 bg-surface-card rounded-xl p-4">
+            <h2 className="text-sm font-semibold text-text-muted uppercase tracking-wider mb-4">
+              {stage.label}
+            </h2>
+            
+            <div className="space-y-3">
+              {tasks.filter(t => t.status === stage.id).map(task => (
+                <div key={task.id} className="bg-slate-800 p-4 rounded-lg border border-slate-700/50 hover:border-brand-accent/50 transition-colors">
+                  <p className="text-sm font-medium text-text-primary">{task.title}</p>
+                  <p className="text-xs text-text-muted mt-3 flex items-center gap-2">
+                    <span className="w-5 h-5 rounded-full bg-brand-primary/20 text-brand-primary flex items-center justify-center font-bold">
+                      T
+                    </span>
+                    {task.assignee}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        ))}
       </main>
     </div>
   );
