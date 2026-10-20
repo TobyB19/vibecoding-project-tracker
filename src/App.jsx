@@ -74,7 +74,6 @@ export default function App() {
     }
   ]);
 
-  // Tracks which task is being edited. null means modal is closed.
   const [editing, setEditing] = useState(null);
 
   const handleSave = (e) => {
@@ -134,10 +133,20 @@ export default function App() {
                 <div 
                   key={task.id} 
                   onClick={() => setEditing(task)}
-                  className="bg-white p-4 rounded-lg border border-slate-200 hover:border-brand-primary transition-colors shadow-sm cursor-pointer"
+                  className="bg-white p-4 rounded-lg border border-slate-200 hover:border-brand-primary transition-colors shadow-sm cursor-pointer flex flex-col gap-2"
                 >
-                  <p className="text-sm font-medium text-text-primary">{task.title}</p>
-                  <p className="text-xs text-text-muted mt-3 flex items-center gap-2">
+                  <div className="flex justify-between items-start gap-2">
+                    <p className="text-sm font-medium text-text-primary leading-tight">{task.title}</p>
+                    {/* Visual marker for feature vs bug */}
+                    <span className={`text-[10px] uppercase tracking-wider font-bold px-2 py-0.5 rounded-full whitespace-nowrap ${
+                      task.type === 'bug' 
+                        ? 'bg-bug/10 text-bug' 
+                        : 'bg-feature/10 text-feature'
+                    }`}>
+                      {task.type}
+                    </span>
+                  </div>
+                  <p className="text-xs text-text-muted mt-2 flex items-center gap-2">
                     <span className="w-5 h-5 rounded-full bg-brand-primary/10 text-brand-primary flex items-center justify-center font-bold">
                       T
                     </span>
@@ -150,7 +159,6 @@ export default function App() {
         ))}
       </main>
 
-      {/* Modal Overlay */}
       {editing && (
         <div className="fixed inset-0 bg-slate-900/50 flex items-center justify-center p-4 z-50">
           <div className="bg-surface-card rounded-xl shadow-xl w-full max-w-md border border-slate-200 overflow-hidden">
