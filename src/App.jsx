@@ -1,5 +1,5 @@
 // src/App.jsx
-// Source: Local React setup and Team Bish specs
+// Source: Local React setup and Clipboard API
 import { useState, useEffect } from 'react';
 
 export const STAGES = [
@@ -80,6 +80,7 @@ export default function App() {
   ]);
 
   const [editing, setEditing] = useState(null);
+  const [copied, setCopied] = useState(false); // Tracks our copy button feedback
 
   const handleSave = (e) => {
     e.preventDefault();
@@ -97,12 +98,23 @@ export default function App() {
       setTasks([...tasks, newTask]);
     }
     setEditing(null);
+    setCopied(false);
   };
 
   const handleDelete = () => {
     if (editing.id && window.confirm('Delete this task?')) {
       setTasks(tasks.filter(t => t.id !== editing.id));
       setEditing(null);
+      setCopied(false);
+    }
+  };
+
+  // Triggers the clipboard copy and gives visual feedback
+  const handleCopy = () => {
+    if (editing && editing.context) {
+      navigator.clipboard.writeText(editing.context);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
     }
   };
 
@@ -139,9 +151,11 @@ export default function App() {
           </p>
         </div>
         
-        {/* added empty context string to the new task payload */}
         <button
-          onClick={() => setEditing({ title: '', description: '', context: '', type: 'feature', status: 'todo', assignee: TEAM[0], dueDate: '' })}
+          onClick={() => {
+            setEditing({ title: '', description: '', context: '', type: 'feature', status: 'todo', assignee: TEAM[0], dueDate: '' });
+            setCopied(false);
+          }}
           className="bg-brand-primary hover:bg-brand-accent text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors shadow-sm"
         >
           + Add Task
@@ -159,7 +173,10 @@ export default function App() {
               {tasks.filter(t => t.status === stage.id).map(task => (
                 <div 
                   key={task.id} 
-                  onClick={() => setEditing(task)}
+                  onClick={() => {
+                    setEditing(task);
+                    setCopied(false);
+                  }}
                   className={`p-4 rounded-lg border-2 hover:border-brand-primary transition-colors shadow-sm cursor-pointer flex flex-col gap-3 ${getDueTint(task.dueDate, task.status)}`}
                 >
                   <div className="flex justify-between items-start gap-2">
@@ -209,10 +226,26 @@ export default function App() {
                 <textarea name="description" defaultValue={editing.description} className="w-full border border-slate-300 rounded p-2 text-sm bg-white text-text-primary h-20 outline-none focus:border-brand-primary" />
               </div>
 
-              {/* new AI context field */}
               <div>
-                <label className="block text-sm text-text-muted mb-1">AI Context (Paste-ready briefing)</label>
-                <textarea name="context" defaultValue={editing.context} placeholder="Drop code snippets or AI prompts here..." className="w-full border border-slate-300 rounded p-2 text-sm bg-white text-text-primary h-20 outline-none focus:border-brand-primary font-mono text-xs" />
+                <div className="flex items-center justify-between mb-1">
+                  <label className="block text-sm text-text-muted">AI Context (Paste-ready briefing)</label>
+                  {/* The new Copy Button */}
+                  <button 
+                    type="button" 
+                    onClick={handleCopy}
+                    className="text-xs font-semibold text-brand-primary hover:text-brand-accent transition-colors"
+                  >
+                    {copied ? 'Copied!' : 'Copy'}
+                  </button>
+                </div>
+                {/* Changed to controlled input so live edits can be copied instantly */}
+                <textarea 
+                  name="context" 
+                  value={editing.context} 
+                  onChange={(e) => setEditing({...editing, context: e.target.value})}
+                  placeholder="Drop code snippets or AI prompts here..." 
+                  className="w-full border border-slate-300 rounded p-2 text-sm bg-white text-text-primary h-20 outline-none focus:border-brand-primary font-mono text-xs" 
+                />
               </div>
 
               <div className="grid grid-cols-2 gap-4">
@@ -253,7 +286,7 @@ export default function App() {
                   <span />
                 )}
                 <div className="flex gap-3">
-                  <button type="button" onClick={() => setEditing(null)} className="text-text-muted hover:text-text-primary text-sm font-medium transition-colors">
+                  <button type="button" onClick={() => { setEditing(null); setCopied(false); }} className="text-text-muted hover:text-text-primary text-sm font-medium transition-colors">
                     Cancel
                   </button>
                   <button type="submit" className="bg-brand-primary hover:bg-brand-accent text-white px-4 py-2 rounded text-sm font-medium transition-colors">
