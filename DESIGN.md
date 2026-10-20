@@ -1,6 +1,6 @@
 # Vibecoding Project Tracker — Design
 
-**Status:** Hackathon starter design doc · fill in the **`<TODO>`** sections before you tag `design-done`.
+**Status:** Hackathon starter design doc · design-done
 
 **Why this file exists.** This tracker is your tool. It should look like *your* tool — not a generic Kanban with default Tailwind blue. Twenty minutes of design decisions here will be visible on every screen for the next six weeks of Module 5.
 
@@ -10,58 +10,54 @@
 
 ## 1. Mood / vibe
 
-One sentence that captures the feeling the tracker should leave you with.
+A clean, high-contrast light mode. Bright and readable, specifically chosen to pass WCAG AA contrast standards for the accessibility report.
 
-Dark mode so my eyes don't burn at 2am.
+Two or three references that capture the vibe:
+- Vercel light mode dashboard
+- Tailwind UI default clean layouts
+- Linear light theme
 
-Two or three references that capture the vibe (links to dribbble shots, screenshots of apps you admire, Pinterest boards — anything visual):
-
-- GitHub dark mode
-- Linear
-- Vercel dashboard
-
-Anti-references — what we are explicitly **not** trying to look like:
-
+Anti-references:
+- Cluttered, low-contrast enterprise tools
 - Jira
-- Microsoft Excel
 
 ## 2. Color palette
 
-These are the colors the build milestones will reference. Once chosen, paste the hex values into `tailwind.config.js` so the rest of the team can use Tailwind utility classes (e.g. `bg-brand-primary`, `border-due-warning`).
+Picked these to hit strong contrast ratios against white/light grey backgrounds (e.g., Slate 900 text on white is 15:1, easily passing AAA).
 
 ### Brand
 
 | Token | Hex | Where it shows up |
 |---|---|---|
-| `brand-primary` | #4f46e5 | Header, + button, focus rings |
-| `brand-accent` | #6366f1 | Highlights, hover states, links |
-| `surface-page` | #020617 | Page background |
-| `surface-card` | #0f172a | Card background |
-| `text-primary` | #f8fafc | Body text |
-| `text-muted` | #94a3b8 | Captions, dates, counts |
+| brand-primary | #2563eb | Header, + button, focus rings |
+| brand-accent | #1d4ed8 | Highlights, hover states |
+| surface-page | #f8fafc | Page background |
+| surface-card | #ffffff | Card background |
+| text-primary | #0f172a | Body text |
+| text-muted | #475569 | Captions, dates, counts |
 
 ### Task type (M6 `tag-style`)
 
 | Token | Hex | When used |
 |---|---|---|
-| `type-feature` | #10b981 | Cards tagged `feature` (accent stripe + icon) |
-| `type-bug` | #f43f5e | Cards tagged `bug` (accent stripe + icon) |
+| `type-feature` | #34d399 | Cards tagged `feature` (accent stripe + icon) |
+| `type-bug` | #f87171 | Cards tagged `bug` (accent stripe + icon) |
 
 ### Due-date states (M8 `due-tint`)
 
 | Token | Hex | When used |
 |---|---|---|
-| `due-safe` | #64748b | More than 2 days out |
-| `due-warning` | #f59e0b | Less than 24 hours |
-| `due-overdue` | #f43f5e | Past due |
-| `due-neutral` | #475569 | Done (overrides date) |
+| `due-safe` | #94a3b8 | More than 2 days out |
+| `due-warning` | #fbbf24 | Less than 24 hours |
+| `due-overdue` | #f87171 | Past due |
+| `due-neutral` | #64748b | Done (overrides date) |
 
 ## 3. Typography
 
 | Role | Font | Why |
 |---|---|---|
 | Heading | Tailwind Sans | clean and default |
-| Body | Tailwind Sans | easy to read |
+| Body | Tailwind Sans | highly readable for the report |
 | Monospace (tags, badges, code) | Tailwind Mono | good for code blocks |
 
 Suggested sizes (override only if the design demands it):
@@ -88,9 +84,9 @@ Three lines of microcopy that capture the tone of the product. Keep it short —
 
 | Where | Text |
 |---|---|
-| + button label | Add Task |
+| "+" button label | Add Task |
 | Empty column placeholder | Nothing here yet. |
-| Toast after Copy as Prompt Context | Copied to clipboard. |
+| Toast after "Copy as Prompt Context" | Copied to clipboard. |
 | Confirm-delete message | Delete this task? |
 | Handoff toast (M7 `task-owner`) | Reassigned to {name}. |
 
@@ -109,7 +105,3 @@ To keep design tight, the following are explicitly not part of `design-done`:
 - Multiple themes. One brand, applied consistently.
 - Animations beyond a 200 ms fade on toast notifications.
 - A custom icon set. Use [Lucide icons](https://lucide.dev) via Tailwind classes if you need any.
-
----
-
-*DESIGN.md version: hackathon-starter v1*

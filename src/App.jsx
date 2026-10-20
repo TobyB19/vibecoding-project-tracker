@@ -1,6 +1,6 @@
+// src/App.jsx
 import { useState, useEffect } from 'react';
 
-// the four columns of the board, in render order.
 export const STAGES = [
   { id: 'todo',        label: 'To Do' },
   { id: 'in-progress', label: 'In Progress' },
@@ -8,7 +8,6 @@ export const STAGES = [
   { id: 'done',        label: 'Done' },
 ];
 
-// just me on the team
 export const TEAM = ['Toby Bishop'];
 
 export function useLocalStorage(key, initialValue) {
@@ -32,7 +31,6 @@ export function useLocalStorage(key, initialValue) {
 }
 
 export default function App() {
-  // M4 data-model: seed tasks so it's not empty
   const [tasks, setTasks] = useLocalStorage('vibetracker.tasks', [
     {
       id: '1',
@@ -47,7 +45,7 @@ export default function App() {
     {
       id: '2',
       title: 'design tailwind colors',
-      description: 'dark mode colors',
+      description: 'sort out the mid-grey colors',
       type: 'feature',
       status: 'review',
       assignee: 'Toby Bishop',
@@ -76,12 +74,6 @@ export default function App() {
     }
   ]);
 
-  // TODO M5 crud-modal:
-  //   const [editing, setEditing] = useState(null);
-  //
-  // TODO M11 anchors:
-  //   const [anchors, setAnchors] = useLocalStorage('vibetracker.anchors', [...]);
-
   return (
     <div className="min-h-screen bg-surface-page p-6 font-sans">
       <header className="mb-8 flex items-end justify-between">
@@ -95,21 +87,19 @@ export default function App() {
         </div>
       </header>
 
-      {/* TODO M11 anchors */}
-
-      <main className="flex gap-6 overflow-x-auto pb-4">
+      <main className="grid grid-cols-4 gap-6 pb-4">
         {STAGES.map(stage => (
-          <div key={stage.id} className="w-80 shrink-0 bg-surface-card rounded-xl p-4">
+          <div key={stage.id} className="bg-surface-card rounded-xl p-4 min-h-[70vh] border border-slate-200 shadow-sm">
             <h2 className="text-sm font-semibold text-text-muted uppercase tracking-wider mb-4">
               {stage.label}
             </h2>
             
             <div className="space-y-3">
               {tasks.filter(t => t.status === stage.id).map(task => (
-                <div key={task.id} className="bg-slate-800 p-4 rounded-lg border border-slate-700/50 hover:border-brand-accent/50 transition-colors">
+                <div key={task.id} className="bg-white p-4 rounded-lg border border-slate-200 hover:border-brand-primary transition-colors shadow-sm">
                   <p className="text-sm font-medium text-text-primary">{task.title}</p>
                   <p className="text-xs text-text-muted mt-3 flex items-center gap-2">
-                    <span className="w-5 h-5 rounded-full bg-brand-primary/20 text-brand-primary flex items-center justify-center font-bold">
+                    <span className="w-5 h-5 rounded-full bg-brand-primary/10 text-brand-primary flex items-center justify-center font-bold">
                       T
                     </span>
                     {task.assignee}
