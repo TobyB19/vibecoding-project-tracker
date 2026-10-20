@@ -164,6 +164,20 @@ The hackathon is "done" when all 13 milestone tags are pushed to your repo and v
 - The "Copy as Prompt Context" demo works on stage.
 - 5 min pitch is rehearsed.
 
+## Functional requirements
+
+- Kanban board with 4 columns: to do, in progress, review, done   
+- A model to add, edit or delete tasks   
+- Visual difference between features and bugs   
+- Show the task owner on the card and add a hand-off dropdown   
+- Text area to save ai prompt context   
+- Copy context button to easily copy stuff to clipboard  
+
+## Non-functional requirements 
+
+- Everything saves to localstorage so no backend needed   
+- Built with react and vite
+
 ---
 
 *PRD version: hackathon-starter v1 · maintained by Prof. Dr. Ignacio Alvarez*
