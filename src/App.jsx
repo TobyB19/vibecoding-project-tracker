@@ -1,5 +1,5 @@
 // src/App.jsx
-// Source: Local React setup and Team Bish specs
+// Source: Local React setup with search bar and task completion progress
 import { useState, useEffect } from 'react';
 
 export const STAGES = [
@@ -11,7 +11,6 @@ export const STAGES = [
 
 export const TEAM = ['Toby Bishop'];
 
-// High-level anchors for the project
 export const DELIVERABLES = [
   { id: 'd1', label: 'Design System', status: 'done' },
   { id: 'd2', label: 'Data Model', status: 'done' },
@@ -91,6 +90,9 @@ export default function App() {
   const [editing, setEditing] = useState(null);
   const [copied, setCopied] = useState(false);
 
+  // Secret Sauce 1: Quick Search Query State
+  const [searchQuery, setSearchQuery] = useState('');
+
   const handleSave = (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
@@ -147,6 +149,17 @@ export default function App() {
     return 'border-due-safe bg-white';
   };
 
+  // Secret Sauce 2: Completion Progress Bar Math
+  const totalTasks = tasks.length;
+  const doneTasks = tasks.filter(t => t.status === 'done').length;
+  const progressPercent = totalTasks === 0 ? 0 : Math.round((doneTasks / totalTasks) * 100);
+
+  // Filter tasks based on search query
+  const displayedTasks = tasks.filter(t => 
+    t.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    t.description.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   return (
     <div className="min-h-screen bg-surface-page p-6 font-sans">
       <header className="mb-6 flex items-end justify-between">
@@ -159,29 +172,56 @@ export default function App() {
           </p>
         </div>
         
-        <button
-          onClick={() => {
-            setEditing({ title: '', description: '', context: '', type: 'feature', status: 'todo', assignee: TEAM[0], dueDate: '' });
-            setCopied(false);
-          }}
-          className="bg-brand-primary hover:bg-brand-accent text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors shadow-sm"
-        >
-          + Add Task
-        </button>
+        <div className="flex items-center gap-3">
+          {/* Quick Search Input */}
+          <input 
+            type="text" 
+            placeholder="Search tasks..." 
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="bg-surface-card border border-slate-200 text-text-primary text-sm rounded-lg px-3 py-2 outline-none focus:border-brand-primary shadow-sm placeholder:text-text-muted w-48"
+          />
+
+          <button
+            onClick={() => {
+              setEditing({ title: '', description: '', context: '', type: 'feature', status: 'todo', assignee: TEAM[0], dueDate: '' });
+              setCopied(false);
+            }}
+            className="bg-brand-primary hover:bg-brand-accent text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors shadow-sm"
+          >
+            + Add Task
+          </button>
+        </div>
       </header>
 
-      {/* Deliverable Anchor Board */}
-      <section className="mb-8 bg-surface-card rounded-xl p-4 border border-slate-200 shadow-sm flex flex-col gap-3">
-        <h2 className="text-xs font-semibold text-text-muted uppercase tracking-wider">
-          Project Deliverables
-        </h2>
-        <div className="flex gap-4 overflow-x-auto pb-1">
-          {DELIVERABLES.map(d => (
-            <div key={d.id} className="flex items-center gap-2 bg-white px-3 py-1.5 rounded-md border border-slate-200 shadow-sm whitespace-nowrap">
-              <div className={`w-2 h-2 rounded-full ${d.status === 'done' ? 'bg-feature' : 'bg-brand-primary'}`} />
-              <span className="text-sm font-medium text-text-primary">{d.label}</span>
-            </div>
-          ))}
+      {/* Deliverables and Progress Bar Section */}
+      <section className="mb-8 bg-surface-card rounded-xl p-4 border border-slate-200 shadow-sm flex flex-col gap-4">
+        <div>
+          <h2 className="text-xs font-semibold text-text-muted uppercase tracking-wider mb-3">
+            Project Deliverables
+          </h2>
+          <div className="flex gap-4 overflow-x-auto pb-1">
+            {DELIVERABLES.map(d => (
+              <div key={d.id} className="flex items-center gap-2 bg-white px-3 py-1.5 rounded-md border border-slate-200 shadow-sm whitespace-nowrap">
+                <div className={`w-2 h-2 rounded-full ${d.status === 'done' ? 'bg-feature' : 'bg-brand-primary'}`} />
+                <span className="text-sm font-medium text-text-primary">{d.label}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Completion Progress Bar */}
+        <div className="border-t border-slate-200 pt-3">
+          <div className="flex justify-between items-center mb-2">
+            <span className="text-xs font-semibold text-text-muted uppercase tracking-wider">Overall Completion</span>
+            <span className="text-xs font-bold text-brand-primary">{progressPercent}%</span>
+          </div>
+          <div className="w-full bg-slate-200 rounded-full h-2">
+            <div 
+              className="bg-brand-primary h-2 rounded-full transition-all duration-500 ease-out" 
+              style={{ width: `${progressPercent}%` }}
+            ></div>
+          </div>
         </div>
       </section>
 
@@ -193,7 +233,7 @@ export default function App() {
             </h2>
             
             <div className="space-y-3">
-              {tasks.filter(t => t.status === stage.id).map(task => (
+              {displayedTasks.filter(t => t.status === stage.id).map(task => (
                 <div 
                   key={task.id} 
                   onClick={() => {
